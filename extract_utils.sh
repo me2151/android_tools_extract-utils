@@ -1166,8 +1166,10 @@ function get_file() {
     local SRC="$3"
 
     if [ "$SRC" = "adb" ]; then
+        local BASENAME=$(basename "$1")
         # try to pull
-        adb pull "$1" "$2" >/dev/null 2>&1 && return 0
+        adb shell "su -c 'cp -r $1 /sdcard'"
+        adb pull "/sdcard/$BASENAME" "$2" >/dev/null 2>&1 && return 0
 
         return 1
     else
